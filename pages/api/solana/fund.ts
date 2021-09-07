@@ -8,12 +8,12 @@ export default async function fund(
 ) {
   try {
     const url = getSafeUrl();
-    const connection = new Connection(url, "confirmed")
+    const connection = new Connection(url, "confirmed");
     const address = req.body.address as PublicKey;
-    const publicKey = undefined  
-    const hash = undefined
-    await undefined
-    res.status(200).json(hash)
+    const publicKey = new PublicKey(address) // created a PublicKey from the string formatted address.
+    const hash = await connection.requestAirdrop(publicKey, LAMPORTS_PER_SOL); // pass this public key to requestAirdrop, together with a constant which represents one SOL
+    await connection.confirmTransaction(hash); // verify the transaction is confirmed by passing the transaction hash to the confirmTransaction method.
+    res.status(200).json(hash); // return the hash of the transaction to the client side in JSON format
   } catch(error) {
     console.error(error)
     res.status(500).json('airdrop failed')

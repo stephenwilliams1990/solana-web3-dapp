@@ -15,8 +15,8 @@ export default async function checkProgram(
     const programId = req.body.programId as PublicKey;
     const url = getSafeUrl();
     const connection = new Connection(url, "confirmed");
-    const publicKey = undefined;
-    const programInfo = undefined;
+    const publicKey = new PublicKey(programId);
+    const programInfo = await connection.getAccountInfo(publicKey); // we call the getAccountInfo method to check if info is available for this address
 
     if (programInfo === null) {
         if (fs.existsSync(PROGRAM_SO_PATH)) {
